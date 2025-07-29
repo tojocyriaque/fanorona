@@ -1,6 +1,5 @@
 #include "headers/bot.hpp"
 #include "headers/game.hpp"
-#include <iostream>
 #include <vector>
 
 namespace Fanorona {
@@ -17,7 +16,7 @@ float Bot::evaluate_board(Game *g) {
 
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
-      score += g->get_board()[i][j];
+      score += g->get_board()[i * 3 + j];
     }
   }
   return score;

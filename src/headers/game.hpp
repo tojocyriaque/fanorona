@@ -8,9 +8,8 @@
 
 namespace Fanorona {
 
-typedef std::array<std::array<int, 3>, 3> game_board;
-typedef std::pair<int, int> square;
-typedef std::pair<square, square> move;
+typedef std::array<int, 9> game_board;
+typedef std::pair<int, int> move;
 
 void change_max_min(int *min, int *max, int val);
 
@@ -20,13 +19,10 @@ public:
   Game();
   ~Game();
 
-  // Game initialisation and playing process
   void init_board(game_board i_board);
 
   game_board get_board();
-  int play_move(square start, square end);
-
-  int play_move_int(int start, int end);
+  int play_move(int start, int end);
 
   int undo_move();
   std::vector<move> possible_moves();
@@ -35,7 +31,6 @@ public:
 
   // Game ending process
   bool is_over();
-  bool is_tie();
 
   int curr_player = 1;
   int winner = 0;
