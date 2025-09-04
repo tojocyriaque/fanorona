@@ -22,18 +22,18 @@ void change_max_min(int *min, int *max, int val) {
     *min = val;
 }
 
-void Game::init_board(game_board i_board) {
+void Game::set_board(game_board i_board) {
   board = i_board;
   game_history.push_back(i_board);
 }
 
 game_board Game::get_board() { return board; }
 
-int Game::play_move(int start, int end) {
+int Game::play_move(int start, int end, int player) {
   int sr = start / 3, sc = start % 3;
   int er = end / 3, ec = end % 3;
 
-  std::vector<move> moves = possible_moves();
+  std::vector<move> moves = possible_moves(player);
   move mv = {start, end};
 
   // Play the move if it is valid
@@ -41,7 +41,7 @@ int Game::play_move(int start, int end) {
     int st_value = board[start];
     int end_value = board[end];
 
-    if (end_value == 0 && curr_player * st_value > 0 && is_over() == false) {
+    if (end_value == 0 && player * st_value > 0 && is_over() == false) {
       // change the end square value
       board[end] = st_value;
       // if the piece was moved for the first time, mutliply the value by 2
@@ -50,8 +50,6 @@ int Game::play_move(int start, int end) {
 
       // empty the start square value
       board[start] = 0;
-      // switch player
-      curr_player *= -1;
 
       game_history.push_back(board);
       return 0;
@@ -73,11 +71,11 @@ int Game::undo_move() {
   return 0;
 }
 
-std::vector<move> Game::possible_moves() {
+std::vector<move> Game::possible_moves(int player) {
   std::vector<move> moves;
   for (int sq = 0; sq < 9; sq++) {
     int piece = board.at(sq);
-    if (piece * curr_player > 0) {
+    if (piece * player > 0) {
       for (int nei : neighbours.at(sq)) {
         if (board[nei] == 0)
           moves.push_back({sq, nei});

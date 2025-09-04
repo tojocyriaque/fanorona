@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\geometry{a4paper, margin=2cm}
+
+\title{Réseau de neurones pour le fanorontelo}
+\author{Projet IA - Jeu traditionnel malgache}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Objectif du projet}
+Remplacer un algorithme Minimax par un réseau de neurones capable d'apprendre à jouer au fanorontelo.
+
+\section*{1. Qu'est-ce que le fanorontelo ?}
+Jeu traditionnel malgache sur un plateau 3x3. Deux joueurs déplacent leurs pions pour aligner 3 pions, mais \textbf{seulement après que tous leurs pions aient bougé au moins une fois}.
+
+\section*{2. Représentation de l'état}
+Chaque case : -2, -1, 0, 1, 2 → encodé en one-hot (5 dimensions). \\
+Total : $9 \times 5 + 1 = 46$ dimensions (ajout du joueur actuel).
+
+\section*{3. Architecture du réseau}
+\item Entrée : 46
+  \item Couches : [128, ReLU], [128, ReLU], [64, ReLU]
+  \item Deux têtes : départ (9) et arrivée (9), avec softmax
+
+\section*{4. Sélection du coup}
+\begin{enumerate}
+  \item Calculer $S(d,a) = p_d[d] \times p_a[a]$
+  \item Masquer les coups invalides (case occupée, pas de connexion, mauvais joueur)
+  \item Choisir $\arg\max S(d,a)$ parmi les valides
+\end{enumerate}
+
+\section*{5. Fonction de perte}
+\[
+\mathcal{L} = -\log(p_d[d^*]) - \log(p_a[a^*])
+\]
+
+\section*{6. Apprentissage}
+Backpropagation met à jour :
+\item Les poids des têtes indépendamment
+  \item Les couches partagées avec le gradient cumulé
+
+\section*{7. Étapes de création}
+\begin{enumerate}
+  \item Générer données avec Minimax
+  \item Encoder états
+  \item Construire réseau
+  \item Entraîner
+  \item Tester
+\end{enumerate}
+
+\section*{8. Perspectives}
+Agent autonome, application, IA culturelle.
+
+\end{document}

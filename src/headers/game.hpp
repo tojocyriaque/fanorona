@@ -19,13 +19,13 @@ public:
   Game();
   ~Game();
 
-  void init_board(game_board i_board);
+  void set_board(game_board i_board);
 
   game_board get_board();
-  int play_move(int start, int end);
+  int play_move(int start, int end, int player);
 
   int undo_move();
-  std::vector<move> possible_moves();
+  std::vector<move> possible_moves(int player);
 
   void show_board();
 
